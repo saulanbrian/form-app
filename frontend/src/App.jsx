@@ -1,6 +1,7 @@
 import { createBrowserRouter,RouterProvider } from 'react-router-dom'
 
 import ProtectedRoute from './utils/protected-route'
+import Protection from './utils/protectedroute'
 
 import Root from './root'
 import Home from './pages/home'
@@ -13,7 +14,7 @@ const router = createBrowserRouter([
     children:[
       {
         path:'home',
-        element:<ProtectedRoute><Home /></ProtectedRoute>
+        element:<Protection><Home /></Protection>
       }
       ]
   },

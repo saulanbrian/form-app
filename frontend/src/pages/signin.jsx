@@ -12,17 +12,26 @@ function SignIn(){
 const SignInAction = async({request}) => {
   
   const data = await request.formData();
+  const username = data.get('username')
+  const password = data.get('password')
   
   try{
-    const res = await api.post('api/auth/token/') 
-    console.log(res)
-    if (!res.ok){
+    const res = await api.post('auth/token/',{
+      username:username,
+      password:password
+    })
+    if (res.status === 200){
+      localStorage.setItem('ACCESS_TOKEN',res.data.access)
+      localStorage.setItem('REFRESH_TOKEN',res.data.refresh)
+      return {message:'logged in successfuly'}
+      }
+
+  }catch(e){
+    if (e.response && e.response.status === 401){
       return {message:'we couldnt find a user with the given credentials'}
     }else{
-      return {message:'logged in successfuly'}
+      return {message:e.message}
     }
-  }catch(e){
-    return {message:'there was an internal error'}
   }
   
 
