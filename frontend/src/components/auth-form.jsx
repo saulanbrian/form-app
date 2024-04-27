@@ -1,4 +1,4 @@
-import { Form,useActionData } from 'react-router-dom'
+import { Form,useActionData,Navigate,redirect } from 'react-router-dom'
 
 function AuthForm({action,method}){
   
@@ -8,7 +8,7 @@ function AuthForm({action,method}){
   <input name='username' />
   <input name='password' type='password' />
   { method == 'signup' &&
-  <input name='password-' type='password' />
+  <input name='password-confirmation' type='password' />
   }
   <button>{method}</button>
   <h1>{ data && data.message && data.message }</h1>

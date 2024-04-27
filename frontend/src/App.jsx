@@ -1,11 +1,12 @@
 import { createBrowserRouter,RouterProvider } from 'react-router-dom'
 
-import ProtectedRoute from './utils/protected-route'
-import Protection from './utils/protectedroute'
+
+import ProtectedRoute from './utils/protectedroute'
 
 import Root from './root'
 import Home from './pages/home'
 import SignIn,{SignInAction} from './pages/signin'
+import LogOut from './pages/logout'
 
 const router = createBrowserRouter([
   {
@@ -14,7 +15,11 @@ const router = createBrowserRouter([
     children:[
       {
         path:'home',
-        element:<Protection><Home /></Protection>
+        element:<Home />
+      },
+      {
+        path:'forms',
+        element:<ProtectedRoute><h1>this is where your forms are </h1></ProtectedRoute>
       }
       ]
   },
@@ -22,6 +27,10 @@ const router = createBrowserRouter([
     path:'auth/sign-in',
     element:<SignIn />,
     action:SignInAction
+  },
+  {
+    path:'auth/logout',
+    element:<LogOut />
   }
   ])
   

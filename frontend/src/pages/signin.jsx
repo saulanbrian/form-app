@@ -1,5 +1,6 @@
 import AuthForm from '../components/auth-form'
 import api from '../api'
+import { redirect } from 'react-router-dom'
 
 function SignIn(){
   
@@ -22,9 +23,9 @@ const SignInAction = async({request}) => {
     })
     if (res.status === 200){
       localStorage.setItem('ACCESS_TOKEN',res.data.access)
-      localStorage.setItem('REFRESH_TOKEN',res.data.refresh)
-      return {message:'logged in successfuly'}
-      }
+      localStorage.setItem('REFRESH_TOKEN',res.data.refresh);
+      return redirect('/home')
+    }
 
   }catch(e){
     if (e.response && e.response.status === 401){
