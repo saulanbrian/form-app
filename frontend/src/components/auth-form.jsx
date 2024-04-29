@@ -1,9 +1,11 @@
 import { Form,useActionData,Navigate,redirect } from 'react-router-dom'
+import { useEffect } from 'react'
 
 function AuthForm({action,method}){
   
   const data = useActionData()
   
+  useEffect(()=>{},[])
   return <Form method='post' action={action}>
   <input name='username' />
   <input name='password' type='password' />

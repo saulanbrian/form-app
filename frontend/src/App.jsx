@@ -7,6 +7,9 @@ import Root from './root'
 import Home from './pages/home'
 import SignIn,{SignInAction} from './pages/signin'
 import LogOut from './pages/logout'
+import UserQuestionnaires,{userQuestionnaireLoader} from './pages/userquestionnaires'
+import ErrorPage from './pages/error'
+ 
 
 const router = createBrowserRouter([
   {
@@ -19,7 +22,9 @@ const router = createBrowserRouter([
       },
       {
         path:'forms',
-        element:<ProtectedRoute><h1>this is where your forms are </h1></ProtectedRoute>
+        element:<ProtectedRoute><UserQuestionnaires/></ProtectedRoute>,
+        loader:userQuestionnaireLoader,
+        errorElement:<ErrorPage />,
       }
       ]
   },

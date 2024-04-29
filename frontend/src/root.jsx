@@ -7,6 +7,7 @@ function Root(){
     gap:'10px',
   }
   
+  const access = localStorage.getItem('ACCESS_TOKEN')
   
   
   return (
@@ -15,7 +16,9 @@ function Root(){
       <nav style={navStyle}>
         <NavLink to='home/'>home</NavLink>
         <NavLink to='forms/'>my forms</NavLink>
+        { access &&
         <NavLink to='auth/logout/'>logout</NavLink>
+        }
       </nav>
     </header>
     <main>

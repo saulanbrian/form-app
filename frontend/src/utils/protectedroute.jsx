@@ -5,43 +5,43 @@ import { Navigate } from 'react-router-dom'
 
 function ProtectedRoute({children}){
   
-  const [isAuthenticated,setIsAuthenticated] = useState(null)
+  const [isAuthenticated,setIsAuthenticated] = useState(false)
   const [loading,setLoading] = useState(true)
   
-  const access = localStorage.getItem('ACCESS_TOKEN')
-  const refresh = localStorage.getItem('REFRESH_TOKEN')
-  const currentTime = Math.floor(Date.now()/1000)
-  
-  
-  
-  useEffect(()=>{
-    if (access){
-      const decoded = jwtDecode(access)
-      if (currentTime < decoded.exp){
-        setIsAuthenticated(true)
+  useEffect(() => {
+    
+    let access = localStorage.getItem('ACCESS_TOKEN')
+    const refresh = localStorage.getItem('REFRESH_TOKEN')
+    const currentTime = Math.floor(Date.now()/1000)
+    
+    
+    const refreshToken = async() => {
+      const res = await api.post('auth/token/refresh/',{refresh:refresh})
+      if (res.status != 200){
+        setIsAuthenticated(false)
       }else{
-        api.post('auth/token/refresh/',{refresh:refresh})
-        .then(res => {
-          if (res.status === 200){
-            localStorage.setItem('ACCESS_TOKEN',res.data.access)
-            setIsAuthenticated(true)
-          }else{
-            setIsAuthenticated(false)
-          }          
-        })
+        localStorage.setItem('ACCESS_TOKEN',res.data.access)
       }
-    }else{
-      setIsAuthenticated(false)
+    }
+    
+    
+    if (access){
+      setIsAuthenticated(true)
+      const decoded = jwtDecode(access)
+      if(currentTime > decoded.exp){
+        console.log('token expired')
+        refreshToken();
+      }
     }
     setLoading(false)
-     
   },[])
   
-  if (!loading){
-    return isAuthenticated? children: <Navigate to='../auth/sign-in/' />
-  }else{
-    return <h1>loading...</h1>
+  if(loading){
+    console.log('loading')
+    return <h1>loading..</h1>
   }
+  
+  return isAuthenticated? children: <Navigate to='../auth/sign-in/' />
   
 }
 
