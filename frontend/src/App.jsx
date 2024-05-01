@@ -1,46 +1,32 @@
-import { createBrowserRouter,RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
-
-import ProtectedRoute from './utils/protectedroute'
-
-import Root from './root'
 import Home from './pages/home'
-import SignIn,{SignInAction} from './pages/signin'
-import LogOut from './pages/logout'
-import UserQuestionnaires,{userQuestionnaireLoader} from './pages/userquestionnaires'
-import ErrorPage from './pages/error'
- 
+import Private from './pages/private'
+import Login from './pages/login'
+
+import { UserContextProvider } from './context/usercontext'
 
 const router = createBrowserRouter([
   {
     path:'/',
-    element:<Root />,
-    children:[
-      {
-        path:'home',
-        element:<Home />
-      },
-      {
-        path:'forms',
-        element:<ProtectedRoute><UserQuestionnaires/></ProtectedRoute>,
-        loader:userQuestionnaireLoader,
-        errorElement:<ErrorPage />,
-      }
-      ]
+    element:<Home />
   },
   {
-    path:'auth/sign-in',
-    element:<SignIn />,
-    action:SignInAction
+    path:'private',
+    element:<Private><h1>this is private nigga</h1></Private>
   },
   {
-    path:'auth/logout',
-    element:<LogOut />
+  path:'login',
+  element:<Login />,
   }
   ])
-  
+
 function App(){
-  return <RouterProvider router={router} />
+  return (
+  <UserContextProvider>
+    <RouterProvider router={router} />
+  </UserContextProvider>
+  );
 }
 
 export default App;
