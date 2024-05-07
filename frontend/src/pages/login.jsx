@@ -1,10 +1,12 @@
 import { Form,useActionData,Navigate } from 'react-router-dom'
 import api from '../api'
 import { useAuth } from '../context/usercontext'
+import { jwtDecode } from 'jwt-decode'
+
 
 function Login(){
   
-  const {login,isAuthenticated} = useAuth()
+  const {login,isAuthenticated,user,setUser} = useAuth()
   
   if(isAuthenticated){
     return <Navigate to='../' />
@@ -22,7 +24,11 @@ function Login(){
     if(res.status === 200){
       const {access,refresh} = res.data
       login({access,refresh})
-      console.log('logged in ')
+      const decoded = jwtDecode(access)
+      setUser({
+        username:decoded.username,
+        id:decoded.user_id
+      })
     }
     
   }

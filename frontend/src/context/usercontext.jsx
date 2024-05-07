@@ -20,6 +20,7 @@ const refreshToken = async() => {
     return res.data.access
     console.log('token is refreshed')
   }else{
+    console.log('failed to refresh')
     console.log(res.data)
     return null
   }
@@ -31,16 +32,16 @@ const auth = async() =>{
   if (token){
     const decoded = jwtDecode(token)
     if (decoded.exp > dateNow){
-      return true
+      return token
     }else{
       const newToken = await refreshToken()
       if (newToken){
         localStorage.setItem('ACCESS_TOKEN',newToken)
-        return true
+        return newToken
       }
     }
   }else{
-    return false
+    return null
   }
 }
 
@@ -52,13 +53,20 @@ export function UserContextProvider({children}){
   useEffect(() => {
     
     const authenticate = async() => {
-      const authenticated = await auth()
-      setIsAuthenticated(authenticated)
+      const token = await auth()
+      if (token){
+        const decoded = jwtDecode(token)
+        setIsAuthenticated(true)
+        setUser({
+          id:decoded.user_id,
+          username:decoded.username
+        })
+      }
       console.log('finished')
     }
     
     authenticate();
-  },[isAuthenticated])
+  },[])
   
   function login({access,refresh}){
     localStorage.setItem('ACCESS_TOKEN',access)

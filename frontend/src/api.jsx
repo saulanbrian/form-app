@@ -5,13 +5,15 @@ const api = axios.create({
   baseURL:import.meta.env.VITE_API_URL
 })
 
-const refreshToken = async(refresh) =>{
+const refreshToken = async() =>{
+  
+  const refresh = localStorage.getItem('REFRESH_TOKEN')
   
   try{
-    const res = await axios.get('http://127.0.0.1:8000/auth/token/refresh/',{refresh:refresh})
+    const res = await axios.post('http://127.0.0.1:8000/auth/token/refresh/',{refresh:refresh})
     
     if (res.status === 200){
-      const newToken = res.data.token
+      const newToken = res.data.access
       return newToken
     }else{
       throw ('an error has occured.')
@@ -33,8 +35,8 @@ api.interceptors.request.use(config => {
   if (token){
     const decoded = jwtDecode(token)
     let latestToken = token
-    if (dateNow < decoded.exp){
-      latestToken = refreshToken(token);
+    if (dateNow > decoded.exp){
+      latestToken = refreshToken();
     }
     config.headers.Authorization = `Bearer ${latestToken}`
   }

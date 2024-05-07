@@ -6,8 +6,6 @@ class QuestionSet(models.Model):
     User,
     on_delete=models.CASCADE,
     related_name='questionsets')
-  direction = models.TextField(
-    max_length=300)
   title = models.CharField(
     max_length=50)
 
@@ -21,7 +19,6 @@ class Question(models.Model):
   question_text = models.CharField(
     max_length=200)
     
-  answer = models.CharField(max_length=50)
   
 class Choice(models.Model):
   choice_text = models.CharField(
@@ -31,3 +28,5 @@ class Choice(models.Model):
     Question,
     on_delete=models.CASCADE,
     related_name='choices')
+  
+  is_correct = models.BooleanField(default=False)
