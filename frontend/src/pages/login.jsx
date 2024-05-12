@@ -1,44 +1,51 @@
-import { Form,useActionData,Navigate } from 'react-router-dom'
-import api from '../api'
+import AuthForm from '../component/authform'
 import { useAuth } from '../context/usercontext'
+import { useActionData, Navigate } from 'react-router-dom'
+import api from '../api'
 import { jwtDecode } from 'jwt-decode'
-
+import { useEffect } from 'react'
 
 function Login(){
   
-  const {login,isAuthenticated,user,setUser} = useAuth()
+  const data = useActionData()
+  const { isAuthenticated, setTokens } = useAuth()
   
-  if(isAuthenticated){
-    return <Navigate to='../' />
-  }
+  if (isAuthenticated) return <Navigate to='/' />
   
-  const authenticate = async(e) =>{
-    e.preventDefault();
-    const {username,password} = e.target
-    
-    const res = await api.post('auth/token/',{
-      username:username.value,
-      password:password.value,
-    })
-    
-    if(res.status === 200){
-      const {access,refresh} = res.data
-      login({access,refresh})
-      const decoded = jwtDecode(access)
-      setUser({
-        username:decoded.username,
-        id:decoded.user_id
-      })
+  useEffect(() => {
+    if(data){
+      const access = data.access
+      const refresh = data.refresh
+      setTokens({access,refresh})
     }
     
-  }
+  },[data])
   
-  return <form onSubmit={authenticate}>
-  <input name='username' />
-  <input type='password' name='password' />
-  <button type='submit'>login</button>
-  </form>
+  return <>
+    <AuthForm action='' method='login' />
+  </>
 }
 
-export default Login;
+export default Login
 
+export async function LoginAction({request}){
+
+  const formData = await request.formData();
+  
+  try{
+    const res = await api.post('auth/token/',{
+      username:formData.get('username'),
+      password:formData.get('password')
+    })
+    
+    if (res.status === 200){
+      return res.data
+    }
+    
+  }catch(e){
+    console.log(e.response.message)
+  }
+  
+  return null 
+  
+}

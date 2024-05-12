@@ -1,17 +1,28 @@
-import { useContext } from 'react'
-import { UserContext } from '../context/usercontext'
-import { NavLink } from 'react-router-dom'
+import { useAuth } from '../context/usercontext'
+import { Outlet,NavLink, useLocation} from 'react-router-dom'
+
+import './home.css'
 
 function Home(){
-  const { isAuthenticated } = useContext(UserContext)
   
-  console.log('rendered')
+  const loc = useLocation().pathname
+  
+  const {user, isAuthenticated} = useAuth()
+  
+  const homeContent = <><h1>you are at home</h1></>
   
   return <>
-  <h1>home</h1>
-  <p>is authenticated: {isAuthenticated? 'true':'false'}</p>
-  <NavLink to='private'>private</NavLink>
+  <header>
+    <nav>
+      <NavLink to='' >home</NavLink>
+      <NavLink to='my-forms' >my forms</NavLink>
+      { isAuthenticated ? <NavLink to='logout' >logout</NavLink> :<NavLink to='login' >login</NavLink>}
+    </nav>
+  </header>
+  
+  { loc === '/' ? homeContent: <Outlet/> }
   </>
+  
 }
 
 export default Home;
