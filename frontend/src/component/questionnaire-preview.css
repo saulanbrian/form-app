@@ -1,0 +1,9 @@
+div.questionnaire-preview{
+  display:flex;
+  justify-content: center ;
+  border:1px solid black;
+  border-radius:5px;
+  height:content-fit;
+  width:90vw;
+  margin:5px 5vw;
+}

@@ -17,13 +17,29 @@ class QuestionSerializer(serializers.ModelSerializer):
   
   class Meta:
     model = Question
-    fields = ('question_text','choices')
+    fields = ('question_from','question_text','choices')
+    
+  def create(self,validated_data):
+    question_from = validated_data.pop('question_from',[])
+    choices = validated_data.pop('choiches',[])
+    
+    question_set = QuestionSet.objects.get(pk=question_from)
+    question = Question.objects.create(
+      **validated_data,question_from=question_from)
+    for choice in choices:
+      choice = Choice.objects.create(**choice,question=question)
 
 class QuestionSetSerializer(serializers.ModelSerializer):
   
+  questions = QuestionSerializer(many=True)
+  
   class Meta:
     model = QuestionSet
-    fields = ('author','title',)
+    fields = ('id','author','title','questions')
+    extra_kwargs = {
+      'questions':{'read_only':True},
+      'id':{'read_only':True}
+      }
 
 
 

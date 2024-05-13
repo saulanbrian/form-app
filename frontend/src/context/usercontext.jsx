@@ -18,6 +18,11 @@ function UserContextProvider({children}){
   function setTokens({access,refresh}){
     localStorage.setItem('REFRESH_TOKEN',refresh)
     localStorage.setItem('ACCESS_TOKEN',access)
+    const decoded = jwtDecode(access)
+    setUser({
+      id:decoded.user_id,
+      username:decoded.username
+    })
     setIsAuthenticated(true)
   }
   
@@ -27,7 +32,7 @@ function UserContextProvider({children}){
     console.log(refresh)
     if (refresh){
       const decoded = jwtDecode(refresh)
-      if (decoded.exp < dateNow){
+      if (decoded.exp > dateNow){
         setUser({
           id:decoded.user_id,
           username:decoded.username,
@@ -35,8 +40,8 @@ function UserContextProvider({children}){
         setIsAuthenticated(true)
       }
     }
-    
-  },[isAuthenticated,user])
+
+  },[])
   
   return <UserContext.Provider value={{
     user,isAuthenticated,setUser,setIsAuthenticated,setTokens

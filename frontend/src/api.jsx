@@ -1,8 +1,6 @@
 import axios from 'axios'
 import {jwtDecode} from 'jwt-decode'
 
-const dateNow = Date.now() / 1000
-
 const api = axios.create({
   baseURL:import.meta.env.VITE_API_URL
 })
@@ -26,15 +24,16 @@ const refreshToken = async() => {
 
 api.interceptors.request.use(
   
-  config => {
+  async(config) => {
+    const dateNow = Date.now() / 1000
     const token = localStorage.getItem('ACCESS_TOKEN')
+    let latestToken = token
     
     if (token){
-      let latestToken = token
       const decoded = jwtDecode(token)
       
       if (dateNow > decoded.exp){
-        const newToken = refreshToken()
+        const newToken = await refreshToken()
         if(newToken){
           latestToken = newToken
         }

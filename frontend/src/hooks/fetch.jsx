@@ -2,7 +2,7 @@ import api from '../api'
 import { useAuth } from '../context/usercontext'
 import { useState,useEffect } from 'react'
 
-const useFetch = async(url) => {
+const useFetch = (url) => {
   
   const [isLoading,setIsLoading] = useState(true)
   const [data,setData] = useState(null)
@@ -22,7 +22,8 @@ const useFetch = async(url) => {
         }
         
       }catch(e){
-        if (e.response.status === 401){
+        if (e.response && e.response.status === 401){
+          console.log(e)
           setIsAuthenticated(false)
         }
         setError(e)
