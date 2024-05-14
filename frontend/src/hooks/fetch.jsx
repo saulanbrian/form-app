@@ -34,7 +34,7 @@ const useFetch = (url) => {
     
     getData();
     
-  },[])
+  },[url])
   
   return { isLoading, data, error }
   

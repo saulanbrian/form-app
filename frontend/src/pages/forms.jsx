@@ -1,32 +1,70 @@
-import useFetch from '../hooks/fetch'
+import { useEffect } from 'react'
+import { useLoaderData } from 'react-router-dom'
+import { useQuery, useMutation,useQueryClient } from '@tanstack/react-query'
+
+import { useAuth } from '../context/usercontext'
+
 import QuestionnairePreview from '../component/questionnaire-preview'
-import './forms.css'
+
 import Loader from '../component/loader.jsx'
+
+import api from '../api'
+
+import './forms.css'
 
 function UserForms () {
   
-  const url = 'api/question/question-set/'
+  const { user } = useAuth();
+  const queryClient = useQueryClient()
   
-  const { isLoading, data, error } = useFetch(url)
+  const formQuery = useQuery({
+    queryKey:['forms'],
+    queryFn: async() => {
+      const res = await api.get('api/question/question-set/')
+      const forms = await res.data
+      return [...forms]
+    }
+  })
   
-  if (isLoading) return <Loader />
+  const newFormMutation = useMutation({
+    mutationFn:async(title) => {
+      const author = user.id
+      const res = await api.post('api/question/question-set/create/',
+      {title:title})
+      return res.data
+    },
+    onSuccess:() => {
+      queryClient.invalidateQueries(['forms'])
+    }
+  })
+
+  function addForm(e){
+    e.preventDefault();
+    const title = e.target.title.value
+    newFormMutation.mutate(title)
+  }
   
-  data && console.log(data)
+  if (formQuery.isLoading) return <Loader />
+  
   
   return <div className='container-fluid'>
-    { data && data.length > 0
-    ?data.map((questionnaire) => {
+    { formQuery.data.map(
+      (questionnaire) => {
       return <QuestionnairePreview 
         key={questionnaire.id}
         title={questionnaire.title}
         />
       })
-    :<h1>you have no questionnaires yet</h1>
     }
-    <button className='btn btn-primary'>
-      create questionnare
+    
+    <form className='form-group d-flex justify-content-center gap-1' onSubmit={addForm}>
+    <input name='title' className='form-control' />
+    <button className='btn btn-primary' type='submit'>
+      create questionnaire
     </button>
+    </form>
   </div>
 }
 
 export default UserForms
+

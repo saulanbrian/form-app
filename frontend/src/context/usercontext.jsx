@@ -38,6 +38,8 @@ function UserContextProvider({children}){
           username:decoded.username,
         })
         setIsAuthenticated(true)
+      }else{
+        localStorage.clear()
       }
     }
 

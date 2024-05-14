@@ -1,4 +1,4 @@
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, ListAPIView, CreateAPIView
 from rest_framework.decorators import api_view
 
 from rest_framework.permissions import IsAuthenticated,AllowAny
@@ -14,7 +14,7 @@ from .serializers import QuestionSetSerializer, QuestionSerializer
 from .models import QuestionSet, Question
 
 
-class QuestionSetListCreateView(ListCreateAPIView):
+class QuestionSetListCreateView(ListAPIView):
   serializer_class = QuestionSetSerializer
   permission_classes = [IsAuthenticated]
   
@@ -33,13 +33,13 @@ def question_list_create(request:Request):
   serializer = QuestionSerializer(queryset,many=True)
   return Response(serializer.data,status=status.HTTP_200_OK)
 
-# class QuestionSetListCreateView(ListCreateAPIView):
-#   serializer_class = QuestionSetSerializer
-#   queryset = QuestionSet.objects.all()
-#   permission_classes = [AllowAny]
-#   
-#   def create(self,request,*args,**kwargs):
-#     try:
-#       super().create(request,*args,**kwargs)
-#     except ValidationError as e:
-#       return Response({'message':str(e.detail['message'])},status=400)
+@api_view(['POST'])
+def questionset_create(request:Request):
+  serializer = QuestionSetSerializer(data=request.data)
+  if request.user.is_anonymous:
+    return Response({'message':'who tf are you'})
+  if serializer.is_valid():
+    serializer.save(author=request.user)
+    return Response(serializer.data,status=status.HTTP_201_CREATED)
+  return Response(serializer.errors)
+  

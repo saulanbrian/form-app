@@ -31,14 +31,15 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 class QuestionSetSerializer(serializers.ModelSerializer):
   
-  questions = QuestionSerializer(many=True)
+  questions = QuestionSerializer(many=True,required=False)
   
   class Meta:
     model = QuestionSet
     fields = ('id','author','title','questions')
     extra_kwargs = {
       'questions':{'read_only':True},
-      'id':{'read_only':True}
+      'id':{'read_only':True},
+      'author':{'read_only':True},
       }
 
 
