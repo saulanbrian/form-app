@@ -29,15 +29,16 @@ def question_list_create(request:Request):
     if serializer.is_valid():
       serializer.save()
     return Response({'message':'post request received'})
-  queryset = Question.objects.all()
-  serializer = QuestionSerializer(queryset,many=True)
+  questionnaire_id = request.query_params.get('formId',None)
+  questionnaire = QuestionSet.objects.get(pk=questionnaire_id)
+  serializer = QuestionSetSerializer(questionnaire)
   return Response(serializer.data,status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def questionset_create(request:Request):
   serializer = QuestionSetSerializer(data=request.data)
   if request.user.is_anonymous:
-    return Response({'message':'who tf are you'})
+    return Response({'message':'who tf are you'},status=status.HTTP_401_UNAUTHORIZED)
   if serializer.is_valid():
     serializer.save(author=request.user)
     return Response(serializer.data,status=status.HTTP_201_CREATED)

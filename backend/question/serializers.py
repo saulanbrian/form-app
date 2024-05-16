@@ -18,6 +18,9 @@ class QuestionSerializer(serializers.ModelSerializer):
   class Meta:
     model = Question
     fields = ('question_from','question_text','choices')
+    extra_kwargs = {
+      'question_from':{'write_only':True}
+    }
     
   def create(self,validated_data):
     question_from = validated_data.pop('question_from',[])
