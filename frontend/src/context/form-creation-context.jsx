@@ -12,7 +12,10 @@ function FormCreationContextProvider({children}){
   const [form,setForm] = useState({title:''})
   const [questions,setQuestions] = useState([{
     question_text:'',
-    choices:[]
+    choices:[
+      {choice_text:'',is_correct:false},
+      {choice_text:'',is_correct:false},
+      ]
   }])
    
   return <FormCreationContext.Provider value={{

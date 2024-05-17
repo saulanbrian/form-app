@@ -1,0 +1,17 @@
+input,textarea{
+  border-top:0 !important;
+  border-left:0 !important;
+  border-right:0 !important;
+  border-radius:0 !important;
+  overflow-wrap: break-word !important;
+}
+
+input:focus, textarea:focus{
+  outline: 0;
+  box-shadow: none !important;
+}
+
+textarea{
+  height:content-fit !important;
+  overflow:wrap !important;
+}
