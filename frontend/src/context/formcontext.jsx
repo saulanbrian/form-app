@@ -2,13 +2,14 @@ import { useContext,createContext,useEffect,useState } from 'react'
 
 const FormCreationContext = createContext()
 
-export const useFormCreationContext = () => {
+export const useFormContext = () => {
   return useContext(FormCreationContext)
 }
 
 
-function FormCreationContextProvider({children}){
+function FormContextProvider({children}){
   
+  const [action,setAction] = useState('create')
   const [form,setForm] = useState({title:''})
   const [questions,setQuestions] = useState([{
     question_text:'',
@@ -19,11 +20,11 @@ function FormCreationContextProvider({children}){
   }])
    
   return <FormCreationContext.Provider value={{
-    form,setForm,questions,setQuestions
+    form,setForm,questions,setQuestions,action,setAction
   }}>
   { children }
   </FormCreationContext.Provider>
   
 }
 
-export default FormCreationContextProvider;
+export default FormContextProvider;

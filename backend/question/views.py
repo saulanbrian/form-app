@@ -1,4 +1,4 @@
-from rest_framework.generics import ListCreateAPIView, ListAPIView, CreateAPIView
+from rest_framework.generics import ListCreateAPIView, ListAPIView, CreateAPIView, UpdateAPIView, RetrieveAPIView
 from rest_framework.decorators import api_view
 
 from rest_framework.permissions import IsAuthenticated,AllowAny
@@ -14,13 +14,37 @@ from .serializers import QuestionSetSerializer, QuestionSerializer
 from .models import QuestionSet, Question
 
 
-class QuestionSetListCreateView(ListAPIView):
+class QuestionSetListCreateView(ListCreateAPIView):
   serializer_class = QuestionSetSerializer
   permission_classes = [IsAuthenticated]
   
   def get_queryset(self):
     user = self.request.user.id
     return QuestionSet.objects.filter(author=user)
+    
+  def perform_create(self,serializer):
+    user = self.request.user
+    serializer.save(author=user)
+    
+
+class QuestionUpdateView(UpdateAPIView):
+  serializer_class = QuestionSerializer
+  permission_classes = [IsAuthenticated]
+  
+  def get_queryset(self):
+    user = self.request.user.id
+    return Question.objects.filter(question_from__author=user)
+  
+
+
+
+
+
+
+
+
+
+
 
 @api_view(['GET','POST'])
 def question_list_create(request:Request):
