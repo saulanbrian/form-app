@@ -15,3 +15,15 @@ textarea{
   height:content-fit !important;
   overflow:wrap !important;
 }
+
+.main{
+  min-height:100vh;
+  height:content-fit;
+  width:100vw;
+  padding:10px;
+  display:flex;
+  flex-direction: column;
+  gap:10px;
+  justify-content:flex-start;
+  align-items:center;
+}

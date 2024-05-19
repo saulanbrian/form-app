@@ -14,7 +14,7 @@ const defaultForm = {
     questions:[{
       question_text:'',
       choices:[
-        {choice_text:'',is_correct:false},
+        {choice_text:'',is_correct:true},
         {choice_text:'',is_correct:false},
         ]
     }]
@@ -22,15 +22,12 @@ const defaultForm = {
 
 
 const defaultActionFunction = async({form}) => {
-  console.log(form)
   try{
     const res = await api.post('api/question/question-set/',form)
-    const data = res.data
+    return res.data
   }catch(e){
-    console.log(e.response.status)
-    const data = null
-  }finally{
-    return data
+    console.log(e)
+    return e
   }
 }
 
@@ -43,6 +40,7 @@ function Form({
   actionFunction=defaultActionFunction
   }){
   
+  const [errors,setErrors] = useState(false)
   const [form,setForm] = useState(formData)
   const [questions,setQuestions] = useState(formData.questions)
   
@@ -74,7 +72,7 @@ function Form({
     setQuestions(prev => ([...prev,{
       question_text:'',
       choices:[
-        {choice_text:'',is_correct:false},
+        {choice_text:'',is_correct:true},
         {choice_text:'',is_correct:false},
         ]
     }]))
@@ -82,10 +80,17 @@ function Form({
   
   async function handleSubmit(){
     const data = await actionFunction({form});
+    if (data.name ==='AxiosError'){
+      setErrors(data.response.data)
+    }
   }
   
   function setAnswer({e,index,questionIndex}){
-    console.log('pass for now')
+    const checked = e.target.checked
+    const currentQuestions = questions
+    currentQuestions[questionIndex].choices.forEach((choice) => { choice.is_correct=false})
+    currentQuestions[questionIndex].choices[index].is_correct = true
+    setQuestions([...currentQuestions])
   }
   
   function Choice({choice,index,questionIndex}){
@@ -102,9 +107,10 @@ function Form({
              className='form-check-input'
              id={index}
              checked={choice.is_correct}
-             onChange={(e) => {setAnswer(e,index,questionIndex)}/>
-      <label className='form-label' for={index}>
-        set as correct
+             onChange={(e) => {setAnswer({e,index,questionIndex})}} 
+             />
+      <label className='form-label' htmlFor={index}>
+       <em style={{fontSize:'10px'}}>set as correct</em>
       </label>
     </div>
     </>
@@ -113,16 +119,18 @@ function Form({
   function Question(index){
     const questionIndex = index
     const question = questions[index]
-    return <div className='fom-group container boder p-2 m-1 bg-light'>
-      <label className='form-label'>Question</label>
+    return  <div className='fom-group container boder p-2 bg-light'>
+      <label className='form-label text-primary'>
+        Question</label>
       <textarea className='form-control text-primary'
                 placeholder='enter a question...'
                 value ={ question.question_text }
                 onChange={e => {handleChange(e,index)}}
                 readOnly={editable? false: true}
       ></textarea>
+      { errors && errors.questions && (question.question_text.length >= 50 || question.question_text.length < 1) && <p>{errors.questions.question_text}</p> }
       <hr />
-      <label className='form-label'>choices</label>
+      <label className='form-label text-primary'>choices</label>
       {question.choices.map((choice,index) => {
         return Choice({choice,index,questionIndex})
       })}
@@ -130,10 +138,10 @@ function Form({
   }
   
   return <>
-  <div className='container-fluid bg-primary-subtle main'>
+  <div className='bg-primary-subtle main'>
   
-    <div className='container form-group border p-2  m-1 gap-0 bg-light' >
-      <label className='form-label '>Form Title</label>
+    <div className='container form-group border p-2 gap-0 bg-light' >
+      <label className='form-label text-primary'>Form Title</label>
       <textarea 
         placeholder='enter the title for this form...'
         className='form-control text-primary' 
@@ -145,6 +153,15 @@ function Form({
     {questions.map((question,index) => {
       return Question(index)
     })}
+
+    <button className='btn btn-secondary' onClick={addQuestion}>
+      add question
+    </button>
+
+    <button 
+      className='btn btn-primary' 
+      onClick={handleSubmit}
+      >submit</button>
   </div>
   </>
 }
