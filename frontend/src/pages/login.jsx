@@ -22,7 +22,7 @@ function Login(){
   },[data])
   
   return <>
-    <AuthForm action='' method='login' />
+    <AuthForm userAction='login' />
   </>
 }
 

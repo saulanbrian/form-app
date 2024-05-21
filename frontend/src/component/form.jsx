@@ -1,8 +1,8 @@
 import { useCreateForm } from '../queries/forms'
 
-import { useFormContext } from '../context/formcontext.jsx'
-
 import { useState, useEffect} from 'react'
+
+import { useNavigate } from 'react-router-dom'
 
 import api from '../api.jsx'
 
@@ -36,15 +36,15 @@ const defaultActionFunction = async({form}) => {
 
 function Form({
   formData=defaultForm,
-  userAction='create',
-  actionFunction=defaultActionFunction
+  editable=true,
+  actionFunction,
+  errors=null
   }){
   
-  const [errors,setErrors] = useState(false)
+  const navigate = useNavigate()
   const [form,setForm] = useState(formData)
   const [questions,setQuestions] = useState(formData.questions)
   
-  const editable = userAction != 'view'
   
   function setTitle(e) {
     const title = e.target.value
@@ -78,12 +78,15 @@ function Form({
     }]))
   }
   
-  async function handleSubmit(){
-    const data = await actionFunction({form});
-    if (data.name ==='AxiosError'){
-      setErrors(data.response.data)
-    }
-  }
+  // async function handleSubmit(){
+//     console.log(form)
+//     const data = await actionFunction({form});
+//     if (data.name && data.name ==='AxiosError'){
+//       setErrors(data.response.data)
+//     }else{
+//       navigate(-1)
+//     }
+//   }
   
   function setAnswer({e,index,questionIndex}){
     const checked = e.target.checked
@@ -119,7 +122,7 @@ function Form({
   function Question(index){
     const questionIndex = index
     const question = questions[index]
-    return  <div className='fom-group container boder p-2 bg-light'>
+    return  <div className='form-group container boder p-2 bg-light form-main'>
       <label className='form-label text-primary'>
         Question</label>
       <textarea className='form-control text-primary'
@@ -128,7 +131,6 @@ function Form({
                 onChange={e => {handleChange(e,index)}}
                 readOnly={editable? false: true}
       ></textarea>
-      { errors && errors.questions && (question.question_text.length >= 50 || question.question_text.length < 1) && <p>{errors.questions.question_text}</p> }
       <hr />
       <label className='form-label text-primary'>choices</label>
       {question.choices.map((choice,index) => {
@@ -147,7 +149,7 @@ function Form({
         className='form-control text-primary' 
         name='title' 
         onChange={setTitle}
-        vlue={form.title}
+        value={form.title}
         readOnly={editable? false: true}></textarea>
     </div>
     {questions.map((question,index) => {
@@ -160,7 +162,7 @@ function Form({
 
     <button 
       className='btn btn-primary' 
-      onClick={handleSubmit}
+      onClick={() => actionFunction({form})}
       >submit</button>
   </div>
   </>

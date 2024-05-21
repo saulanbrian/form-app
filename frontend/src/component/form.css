@@ -1,4 +1,4 @@
-input,textarea{
+.form-main input,textarea{
   border-top:0 !important;
   border-left:0 !important;
   border-right:0 !important;
@@ -6,12 +6,12 @@ input,textarea{
   overflow-wrap: break-word !important;
 }
 
-input:focus, textarea:focus{
+.form-main input:focus, textarea:focus{
   outline: 0;
   box-shadow: none !important;
 }
 
-textarea{
+.form-main textarea{
   height:content-fit !important;
   overflow:wrap !important;
 }

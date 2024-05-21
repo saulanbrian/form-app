@@ -9,6 +9,7 @@ import UserForms from './pages/forms'
 import FormCreation from './pages/form-creation'
 import Login, { LoginAction } from './pages/login'
 import Logout from './pages/logout'
+import SignUp,{ SignUpAction } from './pages/signup.jsx'
 import EditForm from './pages/edit'
 
 import Private from '../utils/private'
@@ -27,20 +28,24 @@ const router = createBrowserRouter([
         path:'my-forms',
         element:<Private><UserForms /></Private>,
       },
-      {
-        path:'my-forms/create',
-        element:<Private><FormCreation /></Private>
-      },
-      {
-        path:'my-forms/edit/:id',
-        element:<Private><EditForm /></Private>
-      }
     ]
+  },
+  {
+    path:'my-forms/create',
+    element:<Private><FormCreation /></Private>
+  },
+  {
+    path:'my-forms/edit/:id',
+    element:<Private><EditForm /></Private>
   },
   {
     path:'login',
     element:<Login />,
     action:LoginAction
+  },{
+    path:'signup',
+    element:<SignUp />,
+    action:SignUpAction
   },
   {
     path:'logout',

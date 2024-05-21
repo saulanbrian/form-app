@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework import status
 
-from .serializers import QuestionSetSerializer, QuestionSerializer
+from .serializers import QuestionSetSerializer, QuestionSerializer,UserSerializer
 
 from .models import QuestionSet, Question
 
@@ -36,12 +36,17 @@ class QuestionUpdateView(UpdateAPIView):
     return Question.objects.filter(question_from__author=user)
   
 
+class QuestionSetUpdateView(UpdateAPIView):
+  serializer_class = QuestionSetSerializer
+  permission_classes = [IsAuthenticated]
+  
+  def get_queryset(self):
+    return QuestionSet.objects.filter(author=self.request.user.id)
 
 
-
-
-
-
+class UserCreationView(CreateAPIView):
+  serializer_class = UserSerializer
+  
 
 
 

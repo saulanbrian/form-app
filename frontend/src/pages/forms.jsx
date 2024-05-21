@@ -1,6 +1,6 @@
 import { useGetForms, useCreateForm } from '../queries/forms'
 
-import { Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 
 import QuestionnairePreview from '../component/questionnaire-preview'
@@ -13,13 +13,9 @@ import './forms.css'
 
 function UserForms () {
   
-  const [creating, setCreating] = useState(false)
-  
+  const navigate = useNavigate()
   const formQuery = useGetForms()
   const newFormMutation = useCreateForm()
-
-  
-  if(creating) return <Navigate to='create' />
   
   if (formQuery.isLoading) return <Loader />
   
@@ -28,14 +24,16 @@ function UserForms () {
   return <>
   { formQuery.data && formQuery.data.length > 0
   ?formQuery.data.map((form) => {
-    return <QuestionnairePreview key={form.id} title={form.title} />
+    return <QuestionnairePreview 
+            key={form.id} 
+            title={form.title}
+            id={form.id}/>
   }):'you hav no forms yet'
   }
   <div className='container d-flex justify-content-center'>
-  <button className='btn btn-primary' 
-    onClick={() => { setCreating(true)}}>
+  <h1 className='btn btn-primary' onClick={() => {navigate('create')}}>
   create
-  </button>
+  </h1>
   </div>
   </>
   

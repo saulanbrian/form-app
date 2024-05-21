@@ -11,6 +11,7 @@ export const useAuth = () => {
 
 function UserContextProvider({children}){
   
+  const [isLoading,setIsLoading] = useState(true)
   const [user,setUser] = useState(null)
   const [isAuthenticated,setIsAuthenticated] = useState(false)
   const dateNow = Date.now() / 1000
@@ -42,11 +43,11 @@ function UserContextProvider({children}){
         localStorage.clear()
       }
     }
-
+    setIsLoading(false)
   },[])
   
   return <UserContext.Provider value={{
-    user,isAuthenticated,setUser,setIsAuthenticated,setTokens
+    user,isAuthenticated,setUser,setIsAuthenticated,setTokens,isLoading
   }}>
     { children }
   </UserContext.Provider>

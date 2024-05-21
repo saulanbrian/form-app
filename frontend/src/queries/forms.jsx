@@ -18,11 +18,22 @@ export const useCreateForm = () => {
   
   return useMutation({
     mutationFn:async(title) => {
-      const res = await api.post('api/question/question-set/create/',{title:title})
+      const res = await api.post('api/question/question-set/',{title:title})
       return res.data
     },
     onSuccess:() => {
       queryClient.invalidateQueries(['forms'])
     }
+  })
+}
+
+export const useUpdateForm = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn:async({form}) => {
+      const res = api.put(`api/question/question-set/update/${form.id}`,{form})
+      return res.data
+    },
+    onSuccess:queryClient.invalidateQueries(['forms'])
   })
 }

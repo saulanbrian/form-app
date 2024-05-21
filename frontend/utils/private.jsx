@@ -1,11 +1,14 @@
 import { useAuth } from '../src/context/usercontext'
 import { Navigate } from 'react-router-dom'
+import Loader from '../src/component/loader.jsx'
 
 function Private({children}){
   
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated,isLoading } = useAuth();
   
-  return isAuthenticated? children: <h1>login first</h1>// <Navigate to='/login'/>
+  if (isLoading) return <Loader />
+  
+  return isAuthenticated? children: <Navigate to='/login'/>
   
 }
 

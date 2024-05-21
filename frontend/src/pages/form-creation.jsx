@@ -1,14 +1,16 @@
-import { useCreateForm } from '../queries/forms'
-
-import { useFormContext } from '../context/formcontext.jsx'
-
-import { useState, useEffect} from 'react'
-
+import BackHeader from '../component/backheader.jsx'
 import Form from '../component/form'
+
+import { useCreateForm } from '../queries/forms.jsx'
 
 function FormCreation(){
   
-  return <Form />
+  const newFormMutation = useCreateForm()
+  
+  return <> 
+    <BackHeader />
+    <Form actionFunction={newFormMutation.mutate} />
+  </>
   
 }
 
