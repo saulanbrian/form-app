@@ -22,11 +22,13 @@ export default function EditForm(){
   const actionFunction = updateFormMutation.mutate
   
   const form = formQuery.data.find(form => form.id == id )
+  
   if (!form) return <p>form not found</p>
   
   return<>
     <BackHeader />
     <Form formData={form} 
           actionFunction={actionFunction}/>
+    { updateFormMutation.isSuccess && alert('success') }
   </>
 }

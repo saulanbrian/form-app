@@ -9,33 +9,8 @@ import api from '../api.jsx'
 import './form.css'
 
 
-const defaultForm = {
-    title:'',
-    questions:[{
-      question_text:'',
-      choices:[
-        {choice_text:'',is_correct:true},
-        {choice_text:'',is_correct:false},
-        ]
-    }]
-  }
-
-
-const defaultActionFunction = async({form}) => {
-  try{
-    const res = await api.post('api/question/question-set/',form)
-    return res.data
-  }catch(e){
-    console.log(e)
-    return e
-  }
-}
-
-
-
-
 function Form({
-  formData=defaultForm,
+  formData,
   editable=true,
   actionFunction,
   errors=null
@@ -77,16 +52,6 @@ function Form({
         ]
     }]))
   }
-  
-  // async function handleSubmit(){
-//     console.log(form)
-//     const data = await actionFunction({form});
-//     if (data.name && data.name ==='AxiosError'){
-//       setErrors(data.response.data)
-//     }else{
-//       navigate(-1)
-//     }
-//   }
   
   function setAnswer({e,index,questionIndex}){
     const checked = e.target.checked

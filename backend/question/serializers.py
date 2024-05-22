@@ -13,7 +13,7 @@ class ChoiceSerializer(serializers.ModelSerializer):
     model = Choice
     fields = ('id','choice_text','is_correct')
     extra_kwargs = {
-      'id':{'read_only':True}
+      'id':{'required':False}
     }
 
     
@@ -25,7 +25,7 @@ class QuestionSerializer(serializers.ModelSerializer):
     model = Question
     fields = ('id','question_text','choices')
     extra_kwargs = {
-      'id':{'read_only':True}
+      'id':{'required':False}
     }
     
   def update(self,instance,validated_data):
@@ -37,6 +37,7 @@ class QuestionSerializer(serializers.ModelSerializer):
       serializer = ChoiceSerializer(choice,data=data,partial=True)
       if serializer.is_valid():
         serializer.update()
+        serializer.save()
       
     instance.question_text(validated_data.get('question_text'),instance.question_text)
     instance.save()
@@ -50,7 +51,7 @@ class QuestionSetSerializer(serializers.ModelSerializer):
     model = QuestionSet
     fields = ('id','author','title','questions')
     extra_kwargs = {
-      'id':{'read_only':True},
+      'id':{'required':False},
       'author':{'read_only':True},
       }
   
@@ -66,18 +67,35 @@ class QuestionSetSerializer(serializers.ModelSerializer):
   
   
   def update(self,instance,validated_data):
-    validated_data.pop('author',[])
-    validated_data.pop('id',[])
-    
-    question_datas = validated_data.pop('questions',[])
-    for question_data in question_datas:
-      question_id = question_data.pop('id')
-      question = question.choices.get(pk=question_id)
-      serializer = QuestionSerializer(question,data=question_data,partial=True)
-      if serializer.is_valid():
-        serializer.update()
-    
+    print(validated_data)
+    q_id = validated_data.pop('id',None)
+    print(q_id)
     instance.title = validated_data.get('title',instance.title)
+    
+    # questions_data = validated_data.pop('questions',[])
+#     for question_data in questions_data:
+#       question_id = question_data.pop('id',None)
+#       question = Question.objects.get(pk=question_id)
+#       question.question_text = validated_data.get('question_text',question.question_text)
+#       question.save()
+      # choices_data = validated_data.pop('choices',[])
+#       if question_id:
+#         question = Question.objects.get(pk=question_id)
+#         serializer = QuestionSerializer(question,data=question_data,partial=True)
+#         if serializer.is_valid():
+#           serializer.save()
+#       else:
+#         Question.objects.create(**question_data)
+#     
+#       for choice_data in choices_data:
+#         choice_id = choice_data.pop('id',None)
+#         if choice_id:
+#           choice = Choice.objects.get(pk=choice_id)
+#           serializer = ChoiceSerializer(choice,data=choice_data,partial=True)
+#           if serializer.is_valid():
+#             serializer.save()
+#         else:
+#           Choice.objects.create(**choice_data,question=question)
     instance.save()
     return instance
 

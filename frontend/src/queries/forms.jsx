@@ -17,8 +17,8 @@ export const useCreateForm = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn:async(title) => {
-      const res = await api.post('api/question/question-set/',{title:title})
+    mutationFn:async({form}) => {
+      const res = await api.post('api/question/question-set/',form)
       return res.data
     },
     onSuccess:() => {
@@ -31,7 +31,10 @@ export const useUpdateForm = () => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn:async({form}) => {
-      const res = api.put(`api/question/question-set/update/${form.id}`,{form})
+      console.log('were sending this...')
+      console.log(form)
+      const res = await api.put(`api/question/question-set/update/${form.id}`,form)
+      console.log(res.data)
       return res.data
     },
     onSuccess:queryClient.invalidateQueries(['forms'])
