@@ -11,13 +11,12 @@ import Login, { LoginAction } from './pages/login'
 import Logout from './pages/logout'
 import SignUp,{ SignUpAction } from './pages/signup.jsx'
 import EditForm from './pages/edit'
+import FormView from './pages/form-view.jsx'
+import RespondentView from './pages/respondent-view.jsx'
 
 import Private from '../utils/private'
 
-
 const queryClient = new QueryClient()
-
-
 
 const router = createBrowserRouter([
   {
@@ -35,8 +34,12 @@ const router = createBrowserRouter([
     element:<Private><FormCreation /></Private>
   },
   {
-    path:'my-forms/edit/:id',
-    element:<Private><EditForm /></Private>
+    path:'my-forms/:id',
+    element:<Private><FormView /></Private>
+  },
+  {
+    path:'form/:id',
+    element:<RespondentView />
   },
   {
     path:'login',
@@ -54,11 +57,15 @@ const router = createBrowserRouter([
   ])
   
 function App(){
-  return <UserContextProvider>
-  <QueryClientProvider client={queryClient}>
-    <RouterProvider router={router} />
-  </QueryClientProvider>
-  </UserContextProvider>
+  return (
+    <UserContextProvider>
+      
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+
+    </UserContextProvider>
+  )
 }
   
 export default App;

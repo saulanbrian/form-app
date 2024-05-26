@@ -8,7 +8,8 @@ export const useGetForms = () => {
     queryFn:async() => {
       const res = await api.get('api/question/question-set/')
       return res.data
-    }
+    },
+    staleTime: 5 * 60 * 1000
   })
 }
 
@@ -31,12 +32,19 @@ export const useUpdateForm = () => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn:async({form}) => {
-      console.log('were sending this...')
-      console.log(form)
       const res = await api.put(`api/question/question-set/update/${form.id}`,form)
-      console.log(res.data)
       return res.data
     },
     onSuccess:queryClient.invalidateQueries(['forms'])
+  })
+}
+
+export const useGetFormById = (id) => {
+  return useQuery({
+    queryKey:['form',id],
+    queryFn:async() => {
+      const res = await api.get(`api/question/question-set/${id}`)
+      return res.data
+    }
   })
 }

@@ -27,6 +27,11 @@ class QuestionSetListCreateView(ListCreateAPIView):
     serializer.save(author=user)
     
 
+class QuestionSetRetrieveView(RetrieveAPIView):
+  serializer_class = QuestionSetSerializer
+  queryset = QuestionSet.objects.all()
+    
+
 class QuestionUpdateView(UpdateAPIView):
   serializer_class = QuestionSerializer
   permission_classes = [IsAuthenticated]
@@ -43,6 +48,11 @@ class QuestionSetUpdateView(UpdateAPIView):
   def get_queryset(self):
     return QuestionSet.objects.filter(author=self.request.user.id)
 
+@api_view(['PUT','PATCH'])
+def update_questionset(request:Request):
+  print(request.data)
+  serializer = QuestionSerializer(request.data)
+  return Response(serializer.data)
 
 class UserCreationView(CreateAPIView):
   serializer_class = UserSerializer

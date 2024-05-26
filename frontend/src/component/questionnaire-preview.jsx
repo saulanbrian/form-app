@@ -6,7 +6,7 @@ function QuestionnairePreview(props){
   const navigate = useNavigate()
   
   function handleClick(){
-    navigate(`edit/${props.id}`)
+    navigate(`${props.id}`)
   }
   
   return <div className='d-flex container border bg-light justify-content-start mb-2 ps-3 rounded align-items-center' onClick={handleClick} >

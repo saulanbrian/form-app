@@ -21,6 +21,14 @@ function Form({
   const [questions,setQuestions] = useState(formData.questions)
   
   
+  useEffect(() => {
+    setForm({
+      ...form,
+      questions:[...questions]
+    })
+  },[questions])
+  
+  
   function setTitle(e) {
     const title = e.target.value
     setForm(prev => ({
@@ -76,6 +84,7 @@ function Form({
              id={index}
              checked={choice.is_correct}
              onChange={(e) => {setAnswer({e,index,questionIndex})}} 
+             disabled={editable? false: true }
              />
       <label className='form-label' htmlFor={index}>
        <em style={{fontSize:'10px'}}>set as correct</em>
@@ -120,7 +129,8 @@ function Form({
     {questions.map((question,index) => {
       return Question(index)
     })}
-
+  
+    { editable && <>
     <button className='btn btn-secondary' onClick={addQuestion}>
       add question
     </button>
@@ -129,6 +139,8 @@ function Form({
       className='btn btn-primary' 
       onClick={() => actionFunction({form})}
       >submit</button>
+      </>
+    }
   </div>
   </>
 }
