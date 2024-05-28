@@ -1,10 +1,24 @@
 import { useState,useEffect } from 'react'
 import { useCreateResponse } from '../queries/response.jsx'
+import { useNavigate } from 'react-router-dom'
 
 function AnswerForm({formData,responseData}){
   
+  const navigate = useNavigate()
+  
   const newResponseMutation = useCreateResponse()
   
+  if (newResponseMutation.isSuccess) {
+    const data = newResponseMutation.data
+    navigate('/success',{
+      replace:true,
+      state:{
+        message:'response submitted',
+        redirect:`/form/${formData.id}/${data.id}`,
+        redirectMessage:'view score'
+      }
+    })
+  }
   const form = formData
   const [answers,setAnswers] = useState({})
   const [finalAnswers,setFinalAnswers] = useState([])
@@ -104,7 +118,7 @@ function AnswerForm({formData,responseData}){
       }) }
   
     {!responseData && <button className='btn btn-primary'
-            onClick={handleSubmit}>submit</button>}
+            onClick={handleSubmit} disabled={finalAnswers.length != form.questions.length}>submit</button>}
   </div>
 }
 

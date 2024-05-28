@@ -14,6 +14,7 @@ import EditForm from './pages/edit'
 import FormView from './pages/form-view.jsx'
 import RespondentView from './pages/respondent-view.jsx'
 import Result from './pages/result.jsx'
+import Success from './pages/success.jsx'
 
 import Private from '../utils/private'
 
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
         element:<Private><UserForms /></Private>,
       },
     ]
+  },
+  {
+    path:'success/',
+    element:<Success />
   },
   {
     path:'my-forms/create',
