@@ -20,7 +20,7 @@ function RespondentView(){
     return <Loader />
   }
   
-  return <AnswerForm formData={formData.data} />
+  return <AnswerForm formData={formData.data}/>
   
 }
 

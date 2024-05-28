@@ -7,3 +7,7 @@ class Response(models.Model):
   user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='responses')
   question_set = models.ForeignKey(QuestionSet,on_delete=models.CASCADE,related_name='responses')
   answers = models.ManyToManyField(Choice)
+  
+  @property
+  def correct_answers(self):
+    return [answer.id for answer in self.answers.filter(is_correct=True)]

@@ -13,6 +13,7 @@ import SignUp,{ SignUpAction } from './pages/signup.jsx'
 import EditForm from './pages/edit'
 import FormView from './pages/form-view.jsx'
 import RespondentView from './pages/respondent-view.jsx'
+import Result from './pages/result.jsx'
 
 import Private from '../utils/private'
 
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
   {
     path:'form/:id',
     element:<RespondentView />
+  },
+  {
+    path:'form/:formId/:responseId',
+    element:<Result />
   },
   {
     path:'login',
