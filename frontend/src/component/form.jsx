@@ -37,6 +37,14 @@ function Form({
     }))
   }
   
+  function setDescription(e){
+    const description = e.target.value
+    setForm(prev => ({
+      ...prev,
+      description:description
+    }))
+  }
+  
   function handleChange(e,index){
     const text = e.target.value
     const currentQuestions = questions
@@ -72,8 +80,8 @@ function Form({
   function Choice({choice,index,questionIndex}){
     return <>
     <textarea 
-      className='form-control text-primary'
-      placeholder='enter a choice...'
+      className='form-control text-primary border border-dark-subtle'
+      placeholder='enter choice...'
       value={choice.choice_text}
       onChange={(e) => {handleChoiceChange(e,index,questionIndex)}}
       readOnly={editable? false: true}>
@@ -96,11 +104,11 @@ function Form({
   function Question(index){
     const questionIndex = index
     const question = questions[index]
-    return  <div className='form-group container boder p-2 bg-light form-main'>
+    return  <div className='form-group container boder p-2 bg-light form-main' key={question.id}>
       <label className='form-label text-primary'>
         Question</label>
-      <textarea className='form-control text-primary'
-                placeholder='enter a question...'
+      <textarea className='form-control text-primary border border-dark-subtle'
+                placeholder='enter question...'
                 value ={ question.question_text }
                 onChange={e => {handleChange(e,index)}}
                 readOnly={editable? false: true}
@@ -116,14 +124,23 @@ function Form({
   return <>
   <div className='bg-primary-subtle main'>
   
-    <div className='container form-group border p-2 gap-0 bg-light' >
+    <div className='container form-group border p-2 gap-1 col-md-7 bg-light' >
       <label className='form-label text-primary'>Form Title</label>
       <textarea 
-        placeholder='enter the title for this form...'
-        className='form-control text-primary' 
+        placeholder='enter title...'
+        
+        className='form-control text-primary mt-1 bg-light-subtle border border-dark-subtle' 
         name='title' 
         onChange={setTitle}
         value={form.title}
+        readOnly={editable? false: true}></textarea>
+      <label className='form-label text-primary'>Description</label>
+      <textarea 
+        placeholder='enter description...'
+        className='form-control text-primary border border-dark-subtle' 
+        name='description' 
+        onChange={setDescription}
+        value={form.description}
         readOnly={editable? false: true}></textarea>
     </div>
     {questions.map((question,index) => {

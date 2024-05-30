@@ -1,25 +1,32 @@
 import AuthForm from '../component/authform'
 import { useAuth } from '../context/usercontext'
-import { useActionData, Navigate } from 'react-router-dom'
+import { useActionData, Navigate, useLocation } from 'react-router-dom'
 import api from '../api'
 import { jwtDecode } from 'jwt-decode'
-import { useEffect } from 'react'
+import { useEffect,useMemo } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 
 function Login(){
   
   const data = useActionData()
   const { isAuthenticated, setTokens } = useAuth()
+  const location = useLocation()
   
-  if (isAuthenticated) return <Navigate to='/' />
+  const pathFrom = useMemo(() => location.state?.pathFrom || '/',[])
+  
+  const queryClient = useQueryClient()
   
   useEffect(() => {
-    if(data){
-      const access = data.access
-      const refresh = data.refresh
-      setTokens({access,refresh})
-    }
-    
-  },[data])
+      if(data){
+        queryClient.invalidateQueries()
+        const access = data.access
+        const refresh = data.refresh
+        setTokens({access,refresh})
+      }
+      
+    },[data])
+  
+  if (isAuthenticated) return <Navigate to={pathFrom}/>
   
   return <>
     <AuthForm userAction='login' />

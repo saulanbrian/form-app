@@ -9,7 +9,8 @@ export const useGetForms = () => {
       const res = await api.get('api/question/question-set/')
       return res.data
     },
-    staleTime: 5 * 60 * 1000
+    cacheTime:Infinity,
+    staleTime:Infinity
   })
 }
 

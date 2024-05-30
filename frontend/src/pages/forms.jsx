@@ -19,23 +19,22 @@ function UserForms () {
   
   if (formQuery.isLoading) return <Loader />
   
-  console.log(formQuery)
-  
-  return <>
+  return <div className='container-fluid bg-primary-subtle' id='forms-main' >
   { formQuery.data && formQuery.data.length > 0
-  ?formQuery.data.map((form) => {
+  ?<div className='container p-2'>{formQuery.data.map((form) => {
     return <QuestionnairePreview 
             key={form.id} 
             title={form.title}
-            id={form.id}/>
-  }):'you hav no forms yet'
+            id={form.id}
+            description={form.description}/>
+  })}</div>:'you hav no forms yet'
   }
   <div className='container d-flex justify-content-center'>
   <h1 className='btn btn-primary' onClick={() => {navigate('create')}}>
   create
   </h1>
   </div>
-  </>
+  </div>
   
 }
 

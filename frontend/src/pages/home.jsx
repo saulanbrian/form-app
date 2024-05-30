@@ -16,7 +16,7 @@ function Home(){
   }
   
   return <>
-  <header className='container-fluid m-0 mb-2 p-0 '>
+  <header className='container-fluid m-0  p-0 '>
     <nav className=' container d-flex border m-0 p-0 pt-1 pb-1 gap-1 ' style={style}>
       <NavLink to='' className='btn btn-outline-primary col-3' >
         home

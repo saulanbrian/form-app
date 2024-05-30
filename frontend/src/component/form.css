@@ -27,3 +27,10 @@
   justify-content:flex-start;
   align-items:center;
 }
+
+textarea{
+  resize: vertical;
+  overflow-y: auto;
+  max-height:100vh;
+  height:auto;
+}

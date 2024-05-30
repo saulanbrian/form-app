@@ -7,7 +7,8 @@ class QuestionSet(models.Model):
     on_delete=models.CASCADE,
     related_name='questionsets')
   title = models.CharField(
-    max_length=50)
+    max_length=150)
+  description = models.CharField(max_length=150)
 
 class Question(models.Model):
   question_from = models.ForeignKey(

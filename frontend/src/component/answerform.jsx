@@ -93,6 +93,7 @@ function AnswerForm({formData,responseData}){
   return <div className='container-fluid bg-primary-subtle'>
     <div className='container bg-light mt-2 p-2' >
       <h1>{form.title}</h1>
+      <p>{form.description}</p>
       <div className='col-12 d-flex justify-content-end'>
         {correctAnswers} / {form.questions.length }
       </div>
@@ -102,7 +103,7 @@ function AnswerForm({formData,responseData}){
       { form.questions.map(question => {
         const questionId = question.id
         return <div className='container bg-light m-1 p-2'key={question.id}>
-          <h1>{question.question_text}</h1>
+          <p>{question.question_text}</p>
           <hr />
           {question.choices.map(choice => {
             return <div key={choice.id} className={`border p-1 mb-1 d-flex align-items-center ${responseData && checkAnswer(choice.id)}`}>

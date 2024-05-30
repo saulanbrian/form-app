@@ -28,7 +28,7 @@ class QuestionSetSerializer(serializers.ModelSerializer):
   
   class Meta:
     model = QuestionSet
-    fields = ('id','author','title','questions')
+    fields = ('id','author','title','description','questions')
     extra_kwargs = {
       'author':{'read_only':True},
       }

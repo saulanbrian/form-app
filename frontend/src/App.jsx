@@ -45,11 +45,11 @@ const router = createBrowserRouter([
   },
   {
     path:'form/:id',
-    element:<RespondentView />
+    element:<Private><RespondentView /></Private>
   },
   {
     path:'form/:formId/:responseId',
-    element:<Result />
+    element:<Private><Result /></Private>
   },
   {
     path:'login',
