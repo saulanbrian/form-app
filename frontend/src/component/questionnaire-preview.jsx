@@ -23,7 +23,7 @@ function QuestionnairePreview(props){
   
   return <div className='container border border-dark bg-light mb-2 p-3 ps-4 col-mb-9 col-sm-12'  >
     <h1 className='lead col-12 '>{props.title}</h1>
-    <p className='row col-12'>{ props.description }</p>
+    <p className=' col-12'>{ props.description }</p>
     <CopyToClipboard text={formPath}>
       <button onClick={handleCopy} className='btn btn-outline-secondary me-1'>
         { isCopied? '✓copied': 'copy link' }

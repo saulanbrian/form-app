@@ -7,6 +7,10 @@ import { useEffect,useMemo } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 
 function Login(){
+
+  const style = {
+    minHeight:'100vh'
+  }
   
   const data = useActionData()
   const { isAuthenticated, setTokens } = useAuth()
@@ -28,9 +32,9 @@ function Login(){
   
   if (isAuthenticated) return <Navigate to={pathFrom}/>
   
-  return <>
+  return <div className='container-fluid d-flex justify-content-center align-items-center bg-primary-subtle d' style={style}>
     <AuthForm userAction='login' />
-  </>
+  </div>
 }
 
 export default Login

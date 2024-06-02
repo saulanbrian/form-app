@@ -1,0 +1,9 @@
+input{
+    max-height: 8vh !important;
+}
+
+@media screen and (min-height:700px){
+    #auth-form{
+        height: 20vh !important;
+    }
+}

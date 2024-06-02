@@ -30,7 +30,6 @@ function UserContextProvider({children}){
   useEffect(()=>{
     const refresh = localStorage.getItem('REFRESH_TOKEN')
     //if refresh token is still valid, we can definitely make an authorized request
-    console.log(refresh)
     if (refresh){
       const decoded = jwtDecode(refresh)
       if (decoded.exp > dateNow){

@@ -104,14 +104,14 @@ function Form({
   function Question(index){
     const questionIndex = index
     const question = questions[index]
-    return  <div className='form-group container boder p-2 bg-light form-main' key={question.id}>
+    return  <div className='form-group container col-md-7 col-lg-5 boder p-2 bg-light form-main' key={question.id}>
       <label className='form-label text-primary'>
         Question</label>
       <textarea className='form-control text-primary border border-dark-subtle'
                 placeholder='enter question...'
                 value ={ question.question_text }
                 onChange={e => {handleChange(e,index)}}
-                readOnly={editable? false: true}
+                readOnly={editable? false: question.question_text <= 150}
       ></textarea>
       <hr />
       <label className='form-label text-primary'>choices</label>
@@ -124,7 +124,7 @@ function Form({
   return <>
   <div className='bg-primary-subtle main'>
   
-    <div className='container form-group border p-2 gap-1 col-md-7 bg-light' >
+    <div className='container form-group border p-2 gap-1 col-md-7 col-lg-5 bg-light' >
       <label className='form-label text-primary'>Form Title</label>
       <textarea 
         placeholder='enter title...'

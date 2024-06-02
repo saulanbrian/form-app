@@ -3,6 +3,10 @@ import { useCreateResponse } from '../queries/response.jsx'
 import { useNavigate } from 'react-router-dom'
 
 function AnswerForm({formData,responseData}){
+
+  const style = {
+    minHeight:'100vh'
+  }
   
   const navigate = useNavigate()
   
@@ -90,36 +94,34 @@ function AnswerForm({formData,responseData}){
     })
   }
   
-  return <div className='container-fluid bg-primary-subtle'>
-    <div className='container bg-light mt-2 p-2' >
+  return <div className='container-fluid bg-primary-subtle pt-2' style={style}>
+    <div className='container col-lg-6 col-md-9 col-12 bg-light p-2 ps-3' >
       <h1>{form.title}</h1>
       <p>{form.description}</p>
-      <div className='col-12 d-flex justify-content-end'>
-        {correctAnswers} / {form.questions.length }
-      </div>
     </div>
-    
-    
-      { form.questions.map(question => {
-        const questionId = question.id
-        return <div className='container bg-light m-1 p-2'key={question.id}>
-          <p>{question.question_text}</p>
-          <hr />
-          {question.choices.map(choice => {
-            return <div key={choice.id} className={`border p-1 mb-1 d-flex align-items-center ${responseData && checkAnswer(choice.id)}`}>
-              <input type='radio' 
-                     className='col-1' 
-                     onChange={e => handleChange(questionId,choice.id) }
-                     checked={responseData? onResponse(choice.id) : isPicked(choice.id)}
-                     disabled={responseData? true: false}/>
-              <p className='col-11'>{ choice.choice_text }</p>
-            </div>
-          })}
-        </div>
-      }) }
-  
-    {!responseData && <button className='btn btn-primary'
-            onClick={handleSubmit} disabled={finalAnswers.length != form.questions.length}>submit</button>}
+    <div className='container col-lg-6 col-md-9 col-12 mb-1 d-flex justify-content-end'>
+        {correctAnswers} / {form.questions.length }
+    </div>
+    { form.questions.map(question => {
+      const questionId = question.id
+      return <div className='container border bg-light col-lg-6 col-md-9 col-12 mb-2 p-2' key={question.id}>
+        <p>{question.question_text}</p>
+        <hr />
+        {question.choices.map(choice => {
+          return <div key={choice.id} className={`border p-1 mb-1 d-flex align-items-center ${responseData && checkAnswer(choice.id)}`}>
+            <input type='radio' 
+                    className='col-1' 
+                    onChange={e => handleChange(questionId,choice.id) }
+                    checked={responseData? onResponse(choice.id) : isPicked(choice.id)}
+                    disabled={responseData? true: false}/>
+            <p className='col-11'>{ choice.choice_text }</p>
+          </div>
+        })}
+      </div>
+    }) }
+    {!responseData && <div className='container d-flex justify-content-end col-lg-6 col-md-9 col-12'>
+      <button className='btn btn-primary'
+            onClick={handleSubmit} disabled={finalAnswers.length != form.questions.length}>submit</button></div>}
   </div>
 }
 

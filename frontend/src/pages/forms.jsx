@@ -21,7 +21,7 @@ function UserForms () {
   
   return <div className='container-fluid bg-primary-subtle' id='forms-main' >
   { formQuery.data && formQuery.data.length > 0
-  ?<div className='container p-2'>{formQuery.data.map((form) => {
+  ?<div className='container pt-2 col-lg-6 col-sm-12'>{formQuery.data.map((form) => {
     return <QuestionnairePreview 
             key={form.id} 
             title={form.title}

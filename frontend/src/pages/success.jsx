@@ -8,19 +8,16 @@ export default function Success (){
   const { message,redirect,redirectMessage } = location.state
   
   const style = {
-    minHeight:'80vh !important',
+    minHeight:'80vh',
   }
   
   function handleRedirect(){
     navigate(redirect)
   }
   
-  return <div className='container-fluid bg-light p-3'>
-  <div className='container border border-success bg-success-subtle mt-1 p-2' style={{style}}>
+  return <div className='container col-lg-5 col-md-8 col-10 mt-1 p-2 d-flex justify-content-center align-items-center flex-column lead' style={style}>
     <h1>{message}</h1>
-    <button className='btn btn-outline-dark'
+    <button className='btn btn-outline-dark mt-2 '
             onClick={handleRedirect}>{redirectMessage}</button>
   </div>
-  </div>
-  
 }

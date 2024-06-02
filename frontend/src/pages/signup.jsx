@@ -1,18 +1,19 @@
 import AuthForm from '../component/authform.jsx'
-import { useActionData, Navigate } from 'react-router-dom'
+import { useActionData, Navigate, redirect } from 'react-router-dom'
 import api from '../api.jsx'
 
 function SignUp(){
+
+  const style = {
+    minHeight:'100vh'
+  }
   
   const data = useActionData()
   
-  if (data && data.error) console.log(data.error.data)
-  
   if (data && data.success) {
-    alert(data.success.message)
-    return <Navigate to='../login' />}
+    return <Navigate to='/success' state={{message:'account successfuly created',redirect:'/login',redirectMessage:'login'}}/>}
   
-  return <AuthForm userAction={'register'} />
+  return <div className='container-fluid d-flex justify-content-center align-items-center bg-primary-subtle d' style={style}><AuthForm userAction={'register'} /></div>
 }
 
 export default SignUp;
