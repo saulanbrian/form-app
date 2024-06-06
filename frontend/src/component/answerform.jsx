@@ -104,11 +104,11 @@ function AnswerForm({formData,responseData}){
     </div>
     { form.questions.map(question => {
       const questionId = question.id
-      return <div className='container border bg-light col-lg-6 col-md-9 col-12 mb-2 p-2' key={question.id}>
+      return <div className='container border bg-light col-lg-6 col-md-9 col-12 mb-2 p-4' key={question.id}>
         <p>{question.question_text}</p>
         <hr />
         {question.choices.map(choice => {
-          return <div key={choice.id} className={`border p-1 mb-1 d-flex align-items-center ${responseData && checkAnswer(choice.id)}`}>
+          return <div key={choice.id} className={`border p-1 m-2 p-1 d-flex align-items-center ${responseData && checkAnswer(choice.id)}`}>
             <input type='radio' 
                     className='col-1' 
                     onChange={e => handleChange(questionId,choice.id) }

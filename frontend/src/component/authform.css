@@ -2,8 +2,40 @@ input{
     max-height: 8vh !important;
 }
 
-@media screen and (min-height:700px){
+
+#auth-form > input,button,h1{
+    height: 50px;
+    flex-basis: 1;
+}
+
+#auth-form > *{
+    margin: 5px 0;
+    width: 80%;
+    flex-grow: 1;
+}
+
+
+#auth-form{
+    height: fit-content;
+    display: flex;
+    min-height: 60vh;
+    width: 50vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5vh 0;
+}
+
+@media screen and (max-width:700px){ 
     #auth-form{
-        height: 20vh !important;
+        height: 60vh;
+    }
+}
+
+@media screen and (min-width:701px) and  (max-width:1400px) {
+    #auth-form{
+        min-height: 1px;
+        height: 50vh;
+        width: 40vh;
     }
 }

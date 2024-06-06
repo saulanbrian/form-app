@@ -21,7 +21,7 @@ function Login(){
   const queryClient = useQueryClient()
   
   useEffect(() => {
-      if(data){
+      if(data && !data.error){
         queryClient.invalidateQueries()
         const access = data.access
         const refresh = data.refresh
@@ -32,9 +32,12 @@ function Login(){
   
   if (isAuthenticated) return <Navigate to={pathFrom}/>
   
-  return <div className='container-fluid d-flex justify-content-center align-items-center bg-primary-subtle d' style={style}>
-    <AuthForm userAction='login' />
-  </div>
+  return <>
+    
+    <div className='container-fluid d-flex justify-content-center align-items-center bg-primary-subtle d' style={style}>
+      <AuthForm userAction='login' errors={data?.error || []}/>
+    </div>
+  </> 
 }
 
 export default Login
@@ -54,9 +57,8 @@ export async function LoginAction({request}){
     }
     
   }catch(e){
-    console.log(e.response.message)
+    return {error:e.response.data}
   }
   
-  return null 
   
 }

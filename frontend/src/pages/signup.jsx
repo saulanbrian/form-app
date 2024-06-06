@@ -9,11 +9,15 @@ function SignUp(){
   }
   
   const data = useActionData()
-  
+
+  if(data?.error) console.log(data.error)
+
   if (data && data.success) {
-    return <Navigate to='/success' state={{message:'account successfuly created',redirect:'/login',redirectMessage:'login'}}/>}
+    return <Navigate to='/success' state={{message:'account successfuly created. click the button below to login',redirect:'/login',redirectMessage:'login'}}/>}
   
-  return <div className='container-fluid d-flex justify-content-center align-items-center bg-primary-subtle d' style={style}><AuthForm userAction={'register'} /></div>
+  return <div className='container-fluid d-flex justify-content-center align-items-center bg-primary-subtle ' style={style}>
+      <AuthForm userAction={'register'} errors={data?.error || null}/>
+    </div>
 }
 
 export default SignUp;
@@ -26,7 +30,7 @@ export const SignUpAction = async({request}) => {
   const confirmation = formData.get('confirmation')
   
   if (password != confirmation){
-    return { invalid:{message:'password do not match'} }
+    return { error:{detail:'password do not match'} }
   }
   
   try{
@@ -40,7 +44,8 @@ export const SignUpAction = async({request}) => {
     }
     
   }catch(e){
-    return {error:{data:e.response.data}}
+    console.log(e.response.data)
+    return {error:e.response.data}
   }
   
   

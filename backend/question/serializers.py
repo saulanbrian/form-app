@@ -3,8 +3,12 @@ from .models import QuestionSet,Question,Choice
 from django.contrib.auth.models import User
 
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.password_validation import validate_password
 
 from rest_framework.exceptions import ValidationError
+from django.core.exceptions import ValidationError as ModelValidationError
+
+import json
 
     
 class ChoiceSerializer(serializers.ModelSerializer):
@@ -55,6 +59,7 @@ class UserSerializer(serializers.ModelSerializer):
     password_data = validated_data.pop('password')
     password = make_password(password_data)
     return User.objects.create(password=password,**validated_data)
+
     
 
 

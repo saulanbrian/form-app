@@ -2,8 +2,9 @@ from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
 from .models import Question,Choice
+from django.contrib.auth.models import User
 
-from rest_framework.exceptions import ValidationError
+
 
 @receiver(post_save,sender=Choice)
 def update_choice(sender,instance,**kwargs):
